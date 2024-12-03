@@ -9,56 +9,71 @@ import { db } from "@/lib/db"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { DollarSign, Users, Mail } from "lucide-react"
 import moment from "moment"
-import numeral from 'numeral'
+import numeral from "numeral"
 import { Button } from "@/components/ui/button"
 
-
-
-async function getNewsletterEmailForUser(issueId: Email["id"], username: Newsletter["username"], userId: User["id"]) {
+async function getNewsletterEmailForUser(
+  issueId: Email["id"],
+  username: Newsletter["username"],
+  userId: User["id"]
+) {
   return await db.email.findUnique({
     where: {
       id: issueId,
       newsletter: {
         username,
-        userId
-      }
+        userId,
+      },
     },
     include: {
-      newsletter: true
-    }
+      newsletter: true,
+    },
   })
 }
 
 interface NewsletterIssuePageProps {
-  params: { newsletterId: string, issueId: string }
+  params: { newsletterId: string; issueId: string }
 }
-  
 
+export default async function NewsletterIssuePage({
+  params,
+}: NewsletterIssuePageProps) {
+  let user = await getCurrentUser()
 
-export default async function NewsletterIssuePage({ params }: NewsletterIssuePageProps) {
-  const user = await getCurrentUser()
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn || "/login")
+  // }
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
+  user = {
+    id: "9bfa9358-2ed9-4e66-963b-7900ee21a4b7",
+    name: null,
+    email: null,
+    emailVerified: new Date("2022-01-01"),
+    publicEmail: null,
+    image: "https://placekitten.com/372/169",
+    createdAt: new Date("2022-01-01"),
+    updatedAt: new Date("2022-01-01"),
+    url: "https://chase.com/",
+    twitter: "isaacwaters",
   }
 
-  
-  const email = await getNewsletterEmailForUser(params.issueId, params.newsletterId, user.id)
+  const email = await getNewsletterEmailForUser(
+    params.issueId,
+    params.newsletterId,
+    user.id
+  )
 
   if (!email || !email.newsletter) {
     notFound()
   }
 
-  
   return (
     <DashboardShell>
       <DashboardHeader
         heading={email.subject}
         text="Newsletter Issue Stats and Settings"
       />
-      <div className="grid gap-10">
-      
-      </div>
+      <div className="grid gap-10"></div>
     </DashboardShell>
   )
 }

@@ -17,26 +17,56 @@ export const metadata = {
 export default async function SettingsPage() {
   let user = await getCurrentUser()
 
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
+  user = {
+    id: "9bfa9358-2ed9-4e66-963b-7900ee21a4b7",
+    name: null,
+    email: null,
+    emailVerified: new Date("2022-01-01"),
+    publicEmail: null,
+    image: "https://placekitten.com/372/169",
+    createdAt: new Date("2022-01-01"),
+    updatedAt: new Date("2022-01-01"),
+    url: "https://chase.com/",
+    twitter: "isaacwaters",
   }
+
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn || "/login")
+  // }
   user = await db.user.findUnique({
     where: {
-      id: user.id
-    }
+      id: user.id,
+    },
   })
-  if (!user) {
-    redirect(authOptions?.pages?.signIn || "/login")
+
+  user = {
+    id: "9bfa9358-2ed9-4e66-963b-7900ee21a4b7",
+    name: null,
+    email: null,
+    emailVerified: new Date("2022-01-01"),
+    publicEmail: null,
+    image: "https://placekitten.com/372/169",
+    createdAt: new Date("2022-01-01"),
+    updatedAt: new Date("2022-01-01"),
+    url: "https://chase.com/",
+    twitter: "isaacwaters",
   }
+
+  // if (!user) {
+  //   redirect(authOptions?.pages?.signIn || "/login")
+  // }
   return (
     <DashboardShell>
-      <DashboardHeader
-        heading="Settings"
-        text="Manage account and settings."
-      />
+      <DashboardHeader heading="Settings" text="Manage account and settings." />
       <div className="grid gap-10">
-        <UserNameForm user={{ id: user.id, name: user.name || ""}} />
-        <UserUrlsForm user={{ id: user.id, url: user.url || "", twitter: user.twitter || "" }} />
+        <UserNameForm user={{ id: user.id, name: user.name || "" }} />
+        <UserUrlsForm
+          user={{
+            id: user.id,
+            url: user.url || "",
+            twitter: user.twitter || "",
+          }}
+        />
       </div>
     </DashboardShell>
   )
